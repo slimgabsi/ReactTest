@@ -10,13 +10,17 @@ import {
 import { Link } from "react-router-dom";
 import { Loading } from "./LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
-
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 const Leaders = (props) => {
   const leaders = props.leaders.leaders.map((leader) => {
     return (
-      <div key={leader.id} className="col-12 col-md-5 m-1">
-        <RenderLeader leader={leader} />
-      </div>
+      <Stagger in>
+        <Fade in>
+          <div key={leader.id} className="col-12 col-md-5 m-1">
+            <RenderLeader leader={leader} />
+          </div>
+        </Fade>
+      </Stagger>
     );
   });
   if (props.leaders.isLoading) {
@@ -37,7 +41,7 @@ const Leaders = (props) => {
         </div>
       </div>
     );
-  } else return <div>{leaders}</div>;
+  } else return <>{leaders}</>;
 };
 
 function About(props) {
@@ -116,9 +120,7 @@ function About(props) {
         <div className="col-12">
           <h2>Corporate Leadership</h2>
         </div>
-        <div className="col-12">
-          <Leaders leaders={props.leaders} />
-        </div>
+        <Leaders leaders={props.leaders} />
       </div>
     </div>
   );
