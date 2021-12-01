@@ -8,6 +8,37 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
+
+const Leaders = (props) => {
+  const leaders = props.leaders.leaders.map((leader) => {
+    return (
+      <div key={leader.id} className="col-12 col-md-5 m-1">
+        <RenderLeader leader={leader} />
+      </div>
+    );
+  });
+  if (props.leaders.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (props.leaders.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <h4>{props.leaders.errMess}</h4>
+          </div>
+        </div>
+      </div>
+    );
+  } else return <div>{leaders}</div>;
+};
 
 function About(props) {
   return (
@@ -86,37 +117,25 @@ function About(props) {
           <h2>Corporate Leadership</h2>
         </div>
         <div className="col-12">
-          <RenderLeader leaders={props.leaders} />
+          <Leaders leaders={props.leaders} />
         </div>
       </div>
     </div>
   );
 }
 
-function RenderLeader({ leaders }) {
-  const leaderss = leaders.map((leader) => {
-    return (
-      <div key={leader.id} className="col-12 mt-5">
-        <Media tag="li">
-          <Media left middle>
-            <Media object src={leader.image} alt={leader.name} />
-          </Media>
-          <Media body className="ml-5">
-            <Media heading>{leader.name}</Media>
-            <h5>{leader.designation}</h5>
-            <p>{leader.description}</p>
-          </Media>
-        </Media>
-      </div>
-    );
-  });
-
+function RenderLeader({ leader }) {
   return (
-    <div className="container">
-      <div className="row">
-        <Media list>{leaderss}</Media>
-      </div>
-    </div>
+    <Media tag="li">
+      <Media left middle>
+        <Media object src={baseUrl + leader.image} alt={leader.name} />
+      </Media>
+      <Media body className="ml-5">
+        <Media heading>{leader.name}</Media>
+        <h5>{leader.designation}</h5>
+        <p>{leader.description}</p>
+      </Media>
+    </Media>
   );
 }
 
